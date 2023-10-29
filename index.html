@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Annoying Count</title>
+</head>
+<body>
+    <h1>Annoying Count</h1>
+    <label for="integerInput">Enter an integer (the number you want to generate): </label>
+    <input type="text" id="integerInput"><br>
+    <label for="lengthInput">Enter length (How many + and -, default 100 if empty): </label>
+    <input type="text" id="lengthInput"><br>
+    <button onclick="generateRandomNumbers()">Generate</button>
+    <button onclick="copyToClipboard()">Copy to Clipboard</button>
+    <p id="result"></p>
+
+    <script>
+        function generateRandomNumbers() {
+            const user_input = parseFloat(document.getElementById("integerInput").value);
+            const length_input = document.getElementById("lengthInput").value || 100;
+
+            function generateRandomNumbersSumToInteger(n, maxAttempts) {
+                const result = [];
+                let attempts = 0;
+
+                while (n !== 0 && attempts < maxAttempts) {
+                    // Generate a random decimal number between -n and n
+                    const randNum = (Math.random() * 2000) - 1000;
+
+                    // Round it to two decimal places
+                    const roundedNum = Math.round(randNum * 100) / 100;
+
+                    // Append it to the result
+                    result.push(roundedNum);
+
+                    // Update the remaining sum
+                    n -= roundedNum;
+
+                    attempts++;
+                }
+
+                return result;
+            }
+
+            function repeat() {
+                const randomNumbers = generateRandomNumbersSumToInteger(user_input, length_input);
+                let fix = Math.round(user_input - randomNumbers.reduce((acc, num) => acc + num, 0), 3);
+                let temp = "";
+
+                for (let i = 0; i < randomNumbers.length; i++) {
+                    if (randomNumbers[i] < 0) {
+                        temp += randomNumbers[i].toString();
+                    } else if (i === 0) {
+                        temp += randomNumbers[i].toString();
+                    } else {
+                        temp += "+" + randomNumbers[i];
+                    }
+                }
+
+                if (fix < 0) {
+                    temp += fix;
+                } else {
+                    temp += "+" + fix;
+                }
+
+                return [fix, temp];
+            }
+
+            let repeatt = repeat();
+            let niceNumber = repeatt[0];
+            let res = repeatt[1];
+            let count = 0;
+
+            while ((niceNumber > 1000 || niceNumber < -1000) && count < 30) {
+                repeatt = repeat();
+                niceNumber = repeatt[0];
+                res = repeatt[1];
+                count++;
+            }
+
+            document.getElementById("result").textContent = res;
+        }
+
+        function copyToClipboard() {
+            const resultText = document.getElementById("result").textContent;
+            const textArea = document.createElement("textarea");
+            textArea.value = resultText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+        }
+    </script>
+</body>
+</html>
