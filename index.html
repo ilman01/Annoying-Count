@@ -71,13 +71,14 @@
             let res = repeatt[1];
             let count = 0;
 
-            while ((niceNumber > 1000 || niceNumber < -1000) && count < 30) {
+            while ((niceNumber > 1000 || niceNumber < -1000) && count < 1000) {
                 repeatt = repeat();
                 niceNumber = repeatt[0];
                 res = repeatt[1];
                 count++;
+                console.log("Finding nice number...")
             }
-
+            count = 0
             document.getElementById("result").textContent = res;
         }
 

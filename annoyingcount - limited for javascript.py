@@ -62,11 +62,17 @@ res = repeatt[1]
 
 count = 0
 
-while nice_number > 1000 or nice_number < -1000 or count < 30:
+while nice_number > 1000 or nice_number < -1000:
+    if count > 1000:
+        break
+    
     repeatt = repeat()
     nice_number = repeatt[0]
     res = repeatt[1]
     count = count + 1
+    print(f"Finding nice number... x{count}", end="\r")
+
+count = 0
 
 print(res)
 
